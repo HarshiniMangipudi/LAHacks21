@@ -9,9 +9,11 @@ logger = logging.getLogger("loginslogger")
 logger.setLevel(logging.INFO)
 logger.addHandler(filehandler)
 
+ON_PI = False
 
 def getcookies(config):
-    os.environ['PATH'] += os.pathsep + "/home/pi/Downloads/geckodriver-0.29.0/target/armv7-unknown-linux-gnueabihf/release"
+    if ON_PI:
+        os.environ['PATH'] += os.pathsep + "/home/pi/Downloads/geckodriver-0.29.0/target/armv7-unknown-linux-gnueabihf/release"
 
     opts = webdriver.FirefoxOptions()
     opts.add_argument("--headless")
