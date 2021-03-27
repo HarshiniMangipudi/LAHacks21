@@ -2,44 +2,97 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 
-from .forms import MessageForm
+
+from django.conf import settings
+
+
+# from .forms import MessageForm
+from .forms import ProfileUpdateForm
 from .utils import send_msg
 
 def homePageView(request):
-    return HttpResponse('Hello, World!')
+    if not request.user.is_authenticated:
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    return render(request, 'home.html')
 
-def sentView(request):
-    return HttpResponse('Sent!')
+    # return HttpResponse('Hello, World!')
+
+# def sentView(request):
+#     return HttpResponse('Sent!')
 
 # def simpleForm(request):
 #     # return HttpResponse('Hello, World!')
 #     return render(request, 'pages/simpleForm.html')
 
-def simpleForm(request):
-    # return HttpResponse('Hello, World!')
-    # return render(request, 'pages/simpleForm.html')
-    # if this is a POST request we need to process the form data
+# def simpleForm(request):
+#     # return HttpResponse('Hello, World!')
+#     # return render(request, 'pages/simpleForm.html')
+#     # if this is a POST request we need to process the form data
+#     if request.method == 'POST':
+#         # create a form instance and populate it with data from the request:
+#         form = MessageForm(request.POST)
+#         # check whether it's valid:
+#         if form.is_valid():
+#             # process the data in form.cleaned_data as required
+#             # ...
+#             # redirect to a new URL:
+#             msg = form.cleaned_data['your_msg']
+#             send_msg(msg)
+#             print(f"success! sent: {msg}")
+
+#             return HttpResponseRedirect('/sent')
+#         print("invalid form!")
+
+#     # if a GET (or any other method) we'll create a blank form
+#     else:
+#         form = MessageForm()
+
+#     return render(request, 'simpleForm.html', {'form': form})
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+class UserLogin(LoginView):
+    template_name = 'login.html'
+    next = 'home'
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def profileUpdateView(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = MessageForm(request.POST)
+        form = ProfileUpdateForm(request.POST, instance=request.user.profile)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
             # redirect to a new URL:
-            msg = form.cleaned_data['your_msg']
-            send_msg(msg)
-            print(f"success! sent: {msg}")
-
-            return HttpResponseRedirect('/sent')
+            form.save()
+            return redirect('profileUpdate')
         print("invalid form!")
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = MessageForm()
+        form = ProfileUpdateForm(instance=request.user.profile)
 
-    return render(request, 'simpleForm.html', {'form': form})
 
+    return render(request, 'profileUpdateForm.html', {'form': form})
 
