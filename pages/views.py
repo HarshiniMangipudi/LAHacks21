@@ -7,6 +7,10 @@ from django.shortcuts import render
 from .forms import MessageForm
 from .utils import send_msg
 
+from django.views.generic import ListView, DetailView
+from django.db import models
+from .models import Task 
+
 def homePageView(request):
     return HttpResponse('Hello, World!')
 
@@ -42,4 +46,14 @@ def simpleForm(request):
 
     return render(request, 'simpleForm.html', {'form': form})
 
+def taskListViews(request):
 
+    context = {
+        'tasks' : Task.objects.all()
+    }
+    return render(request, 'taskList.html', context)
+
+class TaskListView(ListView):
+    model = Task; 
+    template_name = 'taskList.html'
+    context_object_name = 'tasks'
