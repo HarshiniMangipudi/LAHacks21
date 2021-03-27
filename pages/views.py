@@ -9,6 +9,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 
 
+
 from django.conf import settings
 
 
@@ -74,8 +75,9 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 class UserLogin(LoginView):
+    redirect_authenticated_user = True
     template_name = 'login.html'
-    next = 'home'
+    next = '/'
 
 def logout_view(request):
     logout(request)
