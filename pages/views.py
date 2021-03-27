@@ -15,7 +15,7 @@ from django.conf import settings
 
 # from .forms import MessageForm
 from .forms import ProfileUpdateForm
-from .utils import send_msg
+#from .utils import send_msg
 
 from django.views.generic import ListView, DetailView
 from django.db import models
