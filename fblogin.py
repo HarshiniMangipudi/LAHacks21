@@ -25,11 +25,11 @@ def getcookies(config):
     pass_input = test_driver.find_element_by_id("pass")
     login_button = test_driver.find_element_by_id("loginbutton")
     email_input.send_keys(config['facebook']['email'])
-    time.sleep(5)
+    time.sleep(4.5)
     pass_input.send_keys(config['facebook']['password'])
-    time.sleep(5)
+    time.sleep(2.2523)
     login_button.submit()
-    time.sleep(5)
+    time.sleep(6.345345234)
     allcookies = test_driver.get_cookies()
     
     successes = 0
