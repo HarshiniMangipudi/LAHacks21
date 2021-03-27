@@ -8,9 +8,10 @@ from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
+    fb_email = models.EmailField()
+    fb_password = models.CharField(max_length=100)
+    fb_cookie_c_user = models.CharField(max_length=50, blank=True)
+    fb_cookie_xs = models.CharField(max_length=200, blank=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
