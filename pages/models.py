@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.urls import reverse 
 
 
 class Profile(models.Model):
@@ -37,8 +38,6 @@ class Task(models.Model):
     Saturday = models.BooleanField(default=True)
     time_of_day = models.TimeField(default=timezone.now)
     friend_fb_id = models.CharField(max_length=300, blank=False, default='enter user id')
-
-    
 
     def __str__(self):
         return self.task_name

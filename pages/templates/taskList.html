@@ -25,6 +25,10 @@
            </thead>
            <tbody>
               {% for task in tasks %}
+                    <p>Task Name: {{task.task_name}}</p>
+                    <!-- {% if task.Sunday == True %}
+                        <p>Sunday</p>
+                    {% endif %} -->
               <div class="media-body">
               </div>
               {% endfor %}
@@ -33,4 +37,5 @@
      </div>
    </div>
 </div>
+
 {% endblock content %}
