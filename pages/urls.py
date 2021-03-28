@@ -25,4 +25,5 @@ urlpatterns = [
     path('task/<int:pk>/', TaskDetailView.as_view(), name='taskDescription'),
     path('taskCreate', TaskCreateView.as_view(), name='taskCreate'),
     # path('taskCreation', views.createTaskForm, name='taskCreation'),
+    # path('taskList', TaskListView.as_view(), name='taskList'), # ,
 ]
