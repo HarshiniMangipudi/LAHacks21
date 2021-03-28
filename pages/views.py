@@ -3,7 +3,6 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import LoginView
@@ -19,7 +18,7 @@ from .forms import ProfileUpdateForm, TaskCreateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db import models
 from .models import Task 
-from .forms import TaskForm, BootstrapLoginForm
+from .forms import TaskForm, BootstrapLoginForm, BootstrapSignupForm
 
 @login_required
 def homePageView(request):
@@ -29,7 +28,7 @@ def homePageView(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = BootstrapSignupForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -40,7 +39,7 @@ def signup_view(request):
     else:
         if request.user.is_authenticated:
             return redirect('home')
-        form = UserCreationForm()
+        form = BootstrapSignupForm()
     return render(request, 'signup.html', {'form': form})
 
 class UserLogin(LoginView):
@@ -85,9 +84,16 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = 'taskList.html'
     context_object_name = 'tasks'
 
-class TaskDetailView(LoginRequiredMixin, DetailView):
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user.pk)
+
+class TaskDetailView(UserPassesTestMixin, LoginRequiredMixin, DetailView):
     model = Task 
     template_name = 'taskDescription.html'
+
+    def test_func(self):
+        task = self.get_object()
+        return self.request.user == task.user
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

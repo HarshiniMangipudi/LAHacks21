@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-4 offset-sm-4">
+    <div class="col-sm-2 offset-sm-5">
       <form method="post">
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Login</legend>
@@ -23,9 +23,10 @@
             {% endfor %}
           </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+        <hr>
       </form>
-      <p>alternatively, <a href="{% url 'signup' %}">sign up</a></p>
+      <p>Need an account? <a class="btn btn-link" href="{% url 'signup' %}">Sign up</a></p>
     </div>
   </div>
 </div>
