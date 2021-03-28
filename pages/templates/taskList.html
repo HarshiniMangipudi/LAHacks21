@@ -1,12 +1,21 @@
-<!DOCTYPE html>
 {% extends "base.html" %}
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
-    <title>{% block title %}LAhacks{% endblock %}</title>
 
-</head>
+{% block title %}Task List{% endblock %}
+
 {% block content %}
+
+<style>
+        .btn-primary-days:disabled {
+                color: #fff;
+                background-color: #d11cd1;
+                border-color: #d11cd1;
+        }
+        .btn-outline-primary-days:disabled {
+                color: #d11cd1;
+                background-color: #ffffff;
+                border-color: #d11cd1;
+        }
+</style>
 <div class="container-fluid">
    <div class="row">
      <div class="col-md-12">
@@ -14,23 +23,43 @@
          <table class="table">
            <thead>
               <tr>
-                <th>Date</th>
+                <th>Due Date</th>
                 <th>Time</th>
                 <th>Task Name</th>
-                <th>Frequency</th>
+                <th>Days of the Week</th>
                 <th>Friend Name</th>
                 <th>Message</th>
-                <th>Update Task</th>
+                <th>Actions</th>
               </tr>
            </thead>
            <tbody>
               {% for task in tasks %}
-                    <p>Task Name: {{task.task_name}}</p>
-                    <!-- {% if task.Sunday == True %}
-                        <p>Sunday</p>
-                    {% endif %} -->
-              <div class="media-body">
-              </div>
+              <tr>
+                <td>{{task.date_due}}</td>
+                <td>{{task.time_of_day}}</td>
+                <td>{{ task.task_name|truncatechars:9 }}</td>
+                <td><!--Weekly Buttons -->
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group me-2" role="group">
+                                  <button type="button" class="btn{% if task.Sunday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>Su</button>
+                                  <button type="button" class="btn{% if task.Monday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>M</button>
+                                  <button type="button" class="btn{% if task.Tuesday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>Tu</button>
+                                  <button type="button" class="btn{% if task.Wednesday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>W</button>
+                                  <button type="button" class="btn{% if task.Thursday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>Th</button>
+                                  <button type="button" class="btn{% if task.Friday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>F</button>
+                                  <button type="button" class="btn{% if task.Saturday %} btn-primary-days{% else %} btn-outline-primary-days{% endif %}" disabled>Sa</button>
+                                </div>
+                        </div>
+                </td>
+                <td>{{task.friend_fb_id}}</td>
+                <td>{{task.body|truncatechars:9}}</td>
+                <td><!--Update and Remove buttons-->
+                        <a href="{% url 'taskDescription' pk=request.user.id %}">Details</a>
+                        <a href="{% url 'taskDescription' pk=request.user.id %}">Edit</a>
+                        <a href="{% url 'taskDescription' pk=request.user.id %}">Remove</a>
+                </td>
+                
+              </tr>
               {% endfor %}
            </tbody>
          </table>
