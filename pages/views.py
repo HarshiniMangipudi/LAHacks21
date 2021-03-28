@@ -80,12 +80,12 @@ def taskListViews(request):
     }
     return render(request, 'taskList.html', context)
 
-class TaskListView(ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     template_name = 'taskList.html'
     context_object_name = 'tasks'
 
-class TaskDetailView(DetailView):
+class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task 
     template_name = 'taskDescription.html'
 
