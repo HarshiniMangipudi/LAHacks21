@@ -1,20 +1,23 @@
-# LAHacks21
+# Janch - The Friendful Reminder Service
 
-Dope
+## Setting up
 
-## To initialize database stuff
+Install packages
+```
+pip install -r requirements.txt
+```
+
+Initialize database
 ```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-## To initialize run server
+Run development server
 ```
-python manage.py runserver
-# python manage.py runserver <hostname>:<port>
+python manage.py runserver [<hostname>:<port>]
 ```
 
-## To add superuser
-```
-python manage.py createsuperuser --username=admin
-```
+To deploy, apply the standard Django WSGI or ASGI middleware and can be served with Nginx
+
+****LAHacks21*
