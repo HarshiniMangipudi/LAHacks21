@@ -73,13 +73,18 @@ for profile in Profile.objects.all():
         else:
             if fbsession is None: # we are sending a message, so get session
                 # check for saved cookies
-                if hasattr(profile, 'fb_cookie_c_user') and hasattr(profile, 'fb_cookie_xs'):
+                # if hasattr(profile, 'fb_cookie_c_user') and hasattr(profile, 'fb_cookie_xs'):
+                #     cookies = {
+                #         'c_user': profile.fb_cookie_c_user,
+                #         'xs': profile.fb_cookie_xs
+                #     }
+                if profile.c_user == '': # if no cookies, get some
+                    cookies = None
+                else: 
                     cookies = {
                         'c_user': profile.fb_cookie_c_user,
                         'xs': profile.fb_cookie_xs
                     }
-                else: # if no cookies, get some
-                    cookies = None
                 try:
                     (fbsession, newcookies) = fblogin.getsession(login, cookies)
                     print("GOT SESSION")
@@ -87,6 +92,7 @@ for profile in Profile.objects.all():
                     profile.fb_cookie_xs = newcookies['xs']
                     profile.save()
                 except fblogin.LoginException:
+                    print("FAILED LOGIN")
                     loginfailed = True
                     continue
             

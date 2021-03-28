@@ -1,0 +1,1 @@
+python3.7 /home/pi/LAHacks21/manage.py runserver 0.0.0.0:8080
