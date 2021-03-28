@@ -17,10 +17,17 @@
         }
 </style>
 <div class="container-fluid">
-   <div class="row">
-     <div class="col-md-12">
-         <h2>Hello, {{ user.username }}!</h2>
-         <p>Here are your tasks...</p>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="row align-items-center">
+            <div class="col-md-10">
+                <h2>Hello, {{ user.username }}!</h2>
+                <p>Here are your tasks...</p>
+            </div>
+            <div class="col-md-2">
+                <a href="{% url 'taskCreate' %}" class="btn btn-primary float-right">Create Task</a>
+            </div>
+        </div>
          <table class="table">
            <thead>
               <tr>
