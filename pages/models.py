@@ -15,7 +15,12 @@ class Profile(models.Model):
     fb_cookie_xs = models.CharField(max_length=200, blank=True, verbose_name="Facebook Cookie XS")
     
     def __str__(self):
-        return f"-----Profile-----\nUsername: {self.user.username}\n"
+        msg = f"-----Profile-----\n"
+        msg += f"Username: {self.user.username}\n"
+        msg += f"c_user: {self.fb_cookie_c_user}\n"
+        msg += f"xs: {self.fb_cookie_xs}\n"
+        return msg
+    
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -47,5 +52,9 @@ class Task(models.Model):
 
     def __str__(self):
         msg = "-----Task-----\n"
-        msg += f"Name: {self.task_name}\nTime: {str(self.time_of_day)}\n"
+        msg += f"Name: {self.task_name}\n"
+        msg += f"Time: {str(self.time_of_day)}\n"
+        msg += f"Friend Name: {self.friend_name}\n"
+        msg += f"Friend FBID: {str(self.friend_fb_id)}\n"
+        msg += f"[Body]\n{self.body}\n[End]"
         return msg

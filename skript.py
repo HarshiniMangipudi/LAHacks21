@@ -34,7 +34,12 @@ def parsedow(task):
     ]
     return [task.__getattribute__(d) for d in days]
 
-def close(tm, task):
+def close(tm, task, lbound, rbound):
+    lbound = datetime.datetime.combine(lbound, datetime.datetime.min.time())
+    rbound = datetime.datetime.combine(rbound, datetime.datetime.min.time())
+
+    if tm < lbound or rbound < tm:
+        return False
     x = task.time_of_day
     xdows = parsedow(task)
     tmrnd = rnd15(tm)
@@ -63,10 +68,12 @@ for profile in Profile.objects.all():
         print(task)
         if loginfailed:
             break
-        if close(tm, task): # check if we are going to send this task
+        if not close(tm, task, task.start_date, task.end_date): # check if we are going to send this task
+            print("SKIPPING. TIME TOO FAR")
+        else:
             if fbsession is None: # we are sending a message, so get session
                 # check for saved cookies
-                if hasattr(profile, 'c_user') and hasattr(profile, 'xs'):
+                if hasattr(profile, 'fb_cookie_c_user') and hasattr(profile, 'fb_cookie_xs'):
                     cookies = {
                         'c_user': profile.fb_cookie_c_user,
                         'xs': profile.fb_cookie_xs
@@ -74,7 +81,11 @@ for profile in Profile.objects.all():
                 else: # if no cookies, get some
                     cookies = None
                 try:
-                    session = fblogin.getsession(login, cookies)
+                    (fbsession, newcookies) = fblogin.getsession(login, cookies)
+                    print("GOT SESSION")
+                    profile.fb_cookie_c_user = newcookies['c_user']
+                    profile.fb_cookie_xs = newcookies['xs']
+                    profile.save()
                 except fblogin.LoginException:
                     loginfailed = True
                     continue
@@ -82,5 +93,7 @@ for profile in Profile.objects.all():
             # autofill fb_id 
             if task.friend_fb_id == '':
                 task.friend_fb_id, task.friend_name = fblogin.searchname(fbsession, task.friend_name)
+                task.save()
             
             fblogin.send(fbsession, task.body, task.friend_fb_id)
+            print("SENT MESSAGE")
