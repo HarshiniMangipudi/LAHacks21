@@ -14,10 +14,10 @@ from django.conf import settings
 
 
 # from .forms import MessageForm
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, TaskCreateForm
 #from .utils import send_msg
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.db import models
 from .models import Task 
 
@@ -25,40 +25,6 @@ def homePageView(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
     return render(request, 'home.html')
-
-    # return HttpResponse('Hello, World!')
-
-# def sentView(request):
-#     return HttpResponse('Sent!')
-
-# def simpleForm(request):
-#     # return HttpResponse('Hello, World!')
-#     return render(request, 'pages/simpleForm.html')
-
-# def simpleForm(request):
-#     # return HttpResponse('Hello, World!')
-#     # return render(request, 'pages/simpleForm.html')
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = MessageForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#             msg = form.cleaned_data['your_msg']
-#             send_msg(msg)
-#             print(f"success! sent: {msg}")
-
-#             return HttpResponseRedirect('/sent')
-#         print("invalid form!")
-
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-#         form = MessageForm()
-
-#     return render(request, 'simpleForm.html', {'form': form})
 
 def signup_view(request):
     if request.method == 'POST':
@@ -102,7 +68,7 @@ def profileUpdateView(request):
 
 def taskListViews(request):
     context = {
-        'tasks' : Task.objects.all()
+        'tasks' : Task.objects.filter(user = request.user)
     }
     return render(request, 'taskList.html', context)
 
@@ -113,6 +79,51 @@ class TaskListView(ListView):
 
 class TaskDetailView(DetailView):
     model = Task 
+
+# class TaskCreateView(CreateView):
+#     model = Task 
+#     #need to add "due date" in fields 
+#     fields = ['task name', 'task description']
+
+
+
+## other way 
+def createTaskForm(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = TaskCreateForm(request.POST )
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            form.save()
+            return redirect('taskCreation')
+        print("invalid form!")
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = TaskCreateForm()
+    return render(request, 'taskForm.html', {'form': form})
+
+def updateTaskForm(request, pk):
+    t = Task.objects.get(pk=pk)
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = TaskCreateForm(request.POST,instance=t)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            form.save()
+            return redirect('taskCreation')
+        print("invalid form!")
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = TaskCreateForm(instance=t)
+    return render(request, 'taskForm.html', {'form': form})
+
+
 
 # def task_view(request):
 #     if request.method == 'POST':
@@ -130,3 +141,38 @@ class TaskDetailView(DetailView):
 
 
 # def 
+
+
+    # return HttpResponse('Hello, World!')
+
+# def sentView(request):
+#     return HttpResponse('Sent!')
+
+# def simpleForm(request):
+#     # return HttpResponse('Hello, World!')
+#     return render(request, 'pages/simpleForm.html')
+
+# def simpleForm(request):
+#     # return HttpResponse('Hello, World!')
+#     # return render(request, 'pages/simpleForm.html')
+#     # if this is a POST request we need to process the form data
+#     if request.method == 'POST':
+#         # create a form instance and populate it with data from the request:
+#         form = MessageForm(request.POST)
+#         # check whether it's valid:
+#         if form.is_valid():
+#             # process the data in form.cleaned_data as required
+#             # ...
+#             # redirect to a new URL:
+#             msg = form.cleaned_data['your_msg']
+#             send_msg(msg)
+#             print(f"success! sent: {msg}")
+
+#             return HttpResponseRedirect('/sent')
+#         print("invalid form!")
+
+#     # if a GET (or any other method) we'll create a blank form
+#     else:
+#         form = MessageForm()
+
+#     return render(request, 'simpleForm.html', {'form': form})
