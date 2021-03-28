@@ -21,7 +21,7 @@ urlpatterns = [
 
     url(r'^profileUpdate/$', views.profileUpdateView, name='profileUpdate'),
     
-    path('taskList', TaskListView.as_view(), name='taskList'), # ,
+    # path('taskList', TaskListView.as_view(), name='taskList'), # ,
     path('taskCreation', views.createTaskForm, name='taskCreation'),
     path('taskUpdate/<int:pk>', views.updateTaskForm, name='taskUpdate')
 ]

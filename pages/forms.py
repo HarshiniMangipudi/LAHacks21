@@ -4,11 +4,11 @@ from . import models
 # class MessageForm(forms.Form):
 #     your_msg = forms.CharField(label='Your Message', max_length=100)
 
-class BootstrapForm(forms.Form):
+class BootstrapForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BootstrapForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs.update({'class': 'form-control'})
 
 class ProfileUpdateForm(BootstrapForm):
     fb_password = forms.CharField(widget=forms.PasswordInput(), max_length=100)

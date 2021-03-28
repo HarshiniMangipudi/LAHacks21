@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -21,9 +22,10 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.db import models
 from .models import Task 
 
+@login_required
 def homePageView(request):
-    if not request.user.is_authenticated:
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    # if not request.user.is_authenticated:
+    #     return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
     return render(request, 'home.html')
 
 def signup_view(request):
@@ -44,11 +46,14 @@ class UserLogin(LoginView):
     redirect_authenticated_user = True
     template_name = 'login.html'
     next = '/'
+    redirect_field_name = '/home'
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def profileUpdateView(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -66,17 +71,20 @@ def profileUpdateView(request):
         form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'profileUpdateForm.html', {'form': form})
 
+@login_required
 def taskListViews(request):
     context = {
         'tasks' : Task.objects.filter(user = request.user)
     }
     return render(request, 'taskList.html', context)
 
+@login_required
 class TaskListView(ListView):
     model = Task; 
     template_name = 'taskList.html'
     context_object_name = 'tasks'
 
+@login_required
 class TaskDetailView(DetailView):
     model = Task 
 
@@ -88,6 +96,7 @@ class TaskDetailView(DetailView):
 
 
 ## other way 
+@login_required
 def createTaskForm(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -105,6 +114,7 @@ def createTaskForm(request):
         form = TaskCreateForm()
     return render(request, 'taskForm.html', {'form': form})
 
+@login_required
 def updateTaskForm(request, pk):
     t = Task.objects.get(pk=pk)
     if request.method == 'POST':
