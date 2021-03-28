@@ -78,13 +78,11 @@ def taskListViews(request):
     }
     return render(request, 'taskList.html', context)
 
-@login_required
 class TaskListView(ListView):
     model = Task; 
     template_name = 'taskList.html'
     context_object_name = 'tasks'
 
-@login_required
 class TaskDetailView(DetailView):
     model = Task 
     template_name = 'taskDescription.html'
@@ -122,7 +120,6 @@ class TaskCreateView(CreateView):
 
 
 ## other way 
-<<<<<<< HEAD
 # def createTaskForm(request):
 #     if request.method == 'POST':
 #         # create a form instance and populate it with data from the request:
@@ -134,27 +131,12 @@ class TaskCreateView(CreateView):
 #             form.save()
 #             return redirect('taskCreation')
 #         print("invalid form!")
-=======
-@login_required
-def createTaskForm(request):
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = TaskCreateForm(request.POST )
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            form.save()
-            return redirect('taskCreation')
-        print("invalid form!")
->>>>>>> c5b841514b226c4b95a79cd88d36b60b817a4468
 
 #     # if a GET (or any other method) we'll create a blank form
 #     else:
 #         form = TaskCreateForm()
 #     return render(request, 'taskForm.html', {'form': form})
 
-<<<<<<< HEAD
 # def updateTaskForm(request, pk):
 #     t = Task.objects.get(pk=pk)
 #     if request.method == 'POST':
@@ -167,21 +149,6 @@ def createTaskForm(request):
 #             form.save()
 #             return redirect('taskCreation')
 #         print("invalid form!")
-=======
-@login_required
-def updateTaskForm(request, pk):
-    t = Task.objects.get(pk=pk)
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = TaskCreateForm(request.POST,instance=t)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            form.save()
-            return redirect('taskCreation')
-        print("invalid form!")
->>>>>>> c5b841514b226c4b95a79cd88d36b60b817a4468
 
 #     # if a GET (or any other method) we'll create a blank form
 #     else:
