@@ -41,13 +41,14 @@ def close(tm, task):
     l, r = tmrnd - FIFTEEN_HALF, tmrnd + FIFTEEN_HALF
     ltime, rtime = l.time(), r.time()
     ldow, rdow = l.weekday(), r.weekday()
-    if l < r:
-        return l <= x and x < r and xdows[ldow] # ldow == rdow
+    if ltime < rtime:
+        return ltime <= x and x < rtime and xdows[ldow] # ldow == rdow
     else: 
-        return (l <= x and xdows[ldow]) or (x < r and xdows[rdow])
+        return (ltime <= x and xdows[ldow]) or (x < rtime and xdows[rdow])
 
 
 for profile in Profile.objects.all():
+    print(profile)
     try:
         login = {
             'email': profile.fb_email, 
@@ -59,6 +60,7 @@ for profile in Profile.objects.all():
     fbsession = None
     loginfailed = False
     for task in Task.objects.filter(user=profile.user):
+        print(task)
         if loginfailed:
             break
         if close(tm, task): # check if we are going to send this task
