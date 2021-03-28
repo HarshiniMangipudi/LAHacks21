@@ -1,6 +1,6 @@
 from django import forms
 from . import models
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 # class MessageForm(forms.Form):
 #     your_msg = forms.CharField(label='Your Message', max_length=100)
@@ -38,6 +38,11 @@ class BootstrapLoginForm(AuthenticationForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs.update({'class': 'form-control'})
 
+class BootstrapSignupForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(BootstrapSignupForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({'class': 'form-control'})
 
 class TaskForm(BootstrapForm):
     CUSTOM_HANDLED_FIELDS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
