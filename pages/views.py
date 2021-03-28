@@ -20,6 +20,7 @@ from .forms import ProfileUpdateForm, TaskCreateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db import models
 from .models import Task 
+from .forms import TaskForm
 
 @login_required
 def homePageView(request):
@@ -89,46 +90,55 @@ class TaskDetailView(DetailView):
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task 
+    form_class = TaskForm
     template_name = 'taskCreate.html'
-    fields = [
-        'task_name',
-        'body',
-        'date_added',
-        'date_due',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'time_of_day',
-        'friend_fb_id'
-    ]
+    # fields = [
+    #     'task_name',
+    #     'body',
+    #     'date_added',
+    #     'date_due',
+    #     'Sunday',
+    #     'Monday',
+    #     'Tuesday',
+    #     'Wednesday',
+    #     'Thursday',
+    #     'Friday',
+    #     'Saturday',
+    #     'time_of_day',
+    #     'friend_fb_id'
+    # ]
     success_url = '/taskList'
 
     def form_valid(self, form):
         form.instance.user = self.request.user 
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        res = super().get_context_data(**kwargs)
+        res = res.copy()
+        res['custom_handled_fields'] = TaskForm.CUSTOM_HANDLED_FIELDS
+        return res
+
+
 class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Task 
+    form_class = TaskForm
+    model = Task
     template_name = 'taskCreate.html'
-    fields = [
-        'task_name',
-        'body',
-        'date_added',
-        'date_due',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'time_of_day',
-        'friend_fb_id'
-    ]
+    # fields = [
+    #     'task_name',
+    #     'body',
+    #     'date_added',
+    #     'date_due',
+    #     'Sunday',
+    #     'Monday',
+    #     'Tuesday',
+    #     'Wednesday',
+    #     'Thursday',
+    #     'Friday',
+    #     'Saturday',
+    #     'time_of_day',
+    #     'friend_fb_id'
+    # ]
     success_url = '/taskList'
 
     def form_valid(self, form):
@@ -136,8 +146,14 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
  
     def test_func(self):
-        task = self.get_object() 
+        task = self.get_object()
         return self.request.user == task.user
+
+    def get_context_data(self, **kwargs):
+        res = super().get_context_data(**kwargs)
+        res = res.copy()
+        res['custom_handled_fields'] = TaskForm.CUSTOM_HANDLED_FIELDS
+        return res
 
 class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Task  

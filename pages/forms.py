@@ -33,3 +33,22 @@ class TaskCreateForm(BootstrapForm):
 
 
 
+class TaskForm(BootstrapForm):
+    CUSTOM_HANDLED_FIELDS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    class Meta:
+        model = models.Task
+        fields = [
+            'task_name',
+            'body',
+            'date_added',
+            'date_due',
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'time_of_day',
+            'friend_fb_id'
+        ]
