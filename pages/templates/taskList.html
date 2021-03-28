@@ -19,7 +19,8 @@
 <div class="container-fluid">
    <div class="row">
      <div class="col-md-12">
-       <h2>Task List</h2>
+         <h2>Hello, {{ user.username }}!</h2>
+         <p>Here are your tasks...</p>
          <table class="table">
            <thead>
               <tr>
@@ -53,7 +54,7 @@
                                 </div>
                         </div>
                 </td>
-                <td>{{task.friend_fb_id}}</td>
+                <td>{{task.friend_name}}</td>
                 <td>{{task.body|truncatechars:9}}</td>
                 <td><!--Update and Remove buttons-->
                     {% comment %}

@@ -39,6 +39,8 @@ def signup_view(request):
             login(request, user)
             return redirect('home')
     else:
+        if request.user.is_authenticated:
+            return redirect('home')
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
@@ -46,7 +48,7 @@ class UserLogin(LoginView):
     redirect_authenticated_user = True
     template_name = 'login.html'
     next = '/'
-    redirect_field_name = '/home'
+    redirect_field_name = '/'
 
 @login_required
 def logout_view(request):
@@ -79,7 +81,7 @@ def taskListViews(request):
     return render(request, 'taskList.html', context)
 
 class TaskListView(ListView):
-    model = Task; 
+    model = Task
     template_name = 'taskList.html'
     context_object_name = 'tasks'
 
@@ -89,7 +91,7 @@ class TaskDetailView(DetailView):
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
-    model = Task 
+    model = Task
     form_class = TaskForm
     template_name = 'taskCreate.html'
     # fields = [
@@ -144,7 +146,7 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user 
         return super().form_valid(form)
- 
+
     def test_func(self):
         task = self.get_object()
         return self.request.user == task.user
@@ -153,6 +155,7 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         res = super().get_context_data(**kwargs)
         res = res.copy()
         res['custom_handled_fields'] = TaskForm.CUSTOM_HANDLED_FIELDS
+        print(res)
         return res
 
 class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

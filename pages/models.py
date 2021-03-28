@@ -9,10 +9,10 @@ from django.urls import reverse
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fb_email = models.EmailField()
-    fb_password = models.CharField(max_length=100)
-    fb_cookie_c_user = models.CharField(max_length=50, blank=True)
-    fb_cookie_xs = models.CharField(max_length=200, blank=True)
+    fb_email = models.EmailField(verbose_name="Facebook Email")
+    fb_password = models.CharField(max_length=100, verbose_name="Facebook Password")
+    fb_cookie_c_user = models.CharField(max_length=50, blank=True, verbose_name="Facebook User")
+    fb_cookie_xs = models.CharField(max_length=200, blank=True, verbose_name="Facebook Cookie XS")
     
     def __str__(self):
         return f"-----Profile-----\nUsername: {self.user.username}\n"

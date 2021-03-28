@@ -1,12 +1,16 @@
 {% extends "base.html" %}
+{% load pages_extras %}
 {% block content %}
 
 <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
-        <h2>Create Task</h2>  
         <form method="post">
           {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Create/Update Task</legend>
+              <p>Create/update task to remind your friends about</p>
+          </fieldset>
           {% for field in form %}
             {% if field.name not in custom_handled_fields %}
               <div class="form-group">
@@ -26,8 +30,8 @@
               <label for="id_days_opt">Which days would you like a reminder on this task?</label>
               <div class="btn-group btn-group-toggle" id="id_days_opt" data-toggle="buttons">
                   {% for day in custom_handled_fields %}
-                      <label class="btn btn-sm btn-outline-primary days">
-                          <input type="checkbox" autocomplete="off" name="{{day}}"> {{day}}
+                      <label class="btn btn-sm btn-outline-primary days{% if form|get_item:day %} active{% endif %}">
+                          <input type="checkbox" class="btn-check" autocomplete="off" name="{{day}}" {% if form|get_item:day %} checked{% endif %}> {{day}}
                       </label>
                   {% endfor %}
                   <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
@@ -53,7 +57,10 @@
                   <!--   </label> -->
                 </div>
               </div>
-          <button type="submit" class="btn btn-danger btn-block">Submit</button>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">Submit</button>
+                <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
+            </div>
         </form> 
       </div>
     </div>

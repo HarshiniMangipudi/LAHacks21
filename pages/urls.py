@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout'),
 
     url(r'^profileUpdate/$', views.profileUpdateView, name='profileUpdate'),
-    
+
     path('', TaskListView.as_view(), name='taskList'), # ,
     path('task/<int:pk>/', TaskDetailView.as_view(), name='taskDescription'),
     path('task/create', TaskCreateView.as_view(), name='taskCreate'),
