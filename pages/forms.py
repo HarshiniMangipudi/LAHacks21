@@ -12,7 +12,7 @@ class BootstrapForm(forms.ModelForm):
             visible.field.widget.attrs.update({'class': 'form-control'})
 
 class ProfileUpdateForm(BootstrapForm):
-    fb_password = forms.CharField(widget=forms.PasswordInput(), max_length=100)
+    fb_password = forms.CharField(widget=forms.PasswordInput(), max_length=100, label="Facebook Password")
     class Meta:
         model = models.Profile
         fields = ('fb_email', 'fb_password')
