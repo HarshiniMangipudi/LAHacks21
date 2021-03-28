@@ -13,6 +13,9 @@ class Profile(models.Model):
     fb_password = models.CharField(max_length=100)
     fb_cookie_c_user = models.CharField(max_length=50, blank=True)
     fb_cookie_xs = models.CharField(max_length=200, blank=True)
+    
+    def __str__(self):
+        return f"-----Profile-----\nUsername: {self.user.username}\n"
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -43,4 +46,6 @@ class Task(models.Model):
     friend_fb_id = models.CharField(max_length=300, blank=False, default='')
 
     def __str__(self):
-        return self.task_name
+        msg = "-----Task-----\n"
+        msg += f"Name: {self.task_name}\nTime: {str(self.time_of_day)}\n"
+        return msg
