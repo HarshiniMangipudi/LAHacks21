@@ -1,16 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Task Description</legend>
-                {{ form}}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Submit</button>
-            </div>
-        </form>
 
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6 offset-sm-3">
+        <form method="post" action="taskList.html">
+            <h4>Which days would you like a reminder on this task?</h4>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Sunday
+                </label>
+                <label class="btn btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Monday
+                </label>
+                <label class="btn btn-outline-primary days active">
+                    <input type="checkbox" checked autocomplete="off"> Tuesday
+                  </label>
+                <label class="btn btn-outline-primary days active">
+                    <input type="checkbox" checked autocomplete="off"> Wednesday
+                  </label>
+                <label class="btn btn-outline-primary days active">
+                    <input type="checkbox" checked autocomplete="off"> Thursday
+                  </label>
+                <label class="btn btn-outline-primary days active">
+                    <input type="checkbox" checked autocomplete="off"> Friday
+                  </label>
+                <label class="btn btn-outline-primary days active">
+                    <input type="checkbox" checked autocomplete="off"> Saturday
+                  </label>
+              </div>
+              <br>
+          <button type="submit" class="btn btn-outline-info">Submit</button>
+        </form> 
+      </div>
     </div>
+  </div>
 {% endblock content %}

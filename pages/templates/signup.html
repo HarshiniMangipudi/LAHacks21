@@ -3,29 +3,42 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+
+<style>
+  .btn-primary-days:disabled {
+          color: #fff;
+          background-color: #d11cd1;
+          border-color: #d11cd1;
+  }
+  .btn-outline-primary-days:disabled {
+          color: #d11cd1;
+          background-color: #ffffff;
+          border-color: #d11cd1;
+  }
+</style>
   
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-4 offset-sm-4">
-        <h2>Sign up</h2>  
-        <form method="post">
-          {% csrf_token %}
-          {% for field in form %}
-            <div class="form-group">
-              {{ field.label_tag }}<br>
-              {{ field }}
-              {% if field.help_text %}
-                <small class="form-text text-muted" style="color: grey">{{ field.help_text }}</small>
-              {% endif %}
-              {% for error in field.errors %}
-                <div class="invalid-feedback" style="color: red">{{ error }}</div>
-              {% endfor %}
-            </div>
-          {% endfor %}
-          <button type="submit" class="btn btn-primary">Sign up</button>
-        </form> 
-      </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4 offset-sm-4">
+      <h2>Sign up</h2>  
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+              <small class="form-text text-muted" style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback" style="color: red">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Sign up</button>
+      </form> 
     </div>
   </div>
-       
-  {% endblock %}
+</div>
+      
+{% endblock %}
