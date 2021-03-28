@@ -2,12 +2,12 @@
 import os; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 import django; django.setup()
 import fblogin
+from fblogin import logger
+import logging
 from pages.models import Task, Profile
 import datetime
+
 tm = datetime.datetime.now()
-# tm2 = datetime.datetime(2020, 5, 5, hour=5, minute=7, second=29)
-# tm3 = datetime.datetime(2020, 5, 5, hour=5, minute=7, second=31)
-# tm4 = datetime.datetime(2020, 5, 5, hour=4, minute=52, second=31)
 
 FIFTEEN = datetime.timedelta(minutes=15)
 FIFTEEN_HALF = datetime.timedelta(minutes=7, seconds=30)
@@ -53,7 +53,7 @@ def close(tm, task, lbound, rbound):
 
 
 for profile in Profile.objects.all():
-    print(profile)
+    logger.info(profile)
     try:
         login = {
             'email': profile.fb_email, 
@@ -65,11 +65,11 @@ for profile in Profile.objects.all():
     fbsession = None
     loginfailed = False
     for task in Task.objects.filter(user=profile.user):
-        print(task)
+        logger.info(task)
         if loginfailed:
             break
         if not close(tm, task, task.start_date, task.end_date): # check if we are going to send this task
-            print("SKIPPING. TIME TOO FAR")
+            logger.info("SKIPPING. TIME TOO FAR")
         else:
             if fbsession is None: # we are sending a message, so get session
                 # check for saved cookies
@@ -87,12 +87,12 @@ for profile in Profile.objects.all():
                     }
                 try:
                     (fbsession, newcookies) = fblogin.getsession(login, cookies)
-                    print("GOT SESSION")
+                    logger.info("GOT SESSION")
                     profile.fb_cookie_c_user = newcookies['c_user']
                     profile.fb_cookie_xs = newcookies['xs']
                     profile.save()
                 except fblogin.LoginException:
-                    print("FAILED LOGIN")
+                    logger.info("FAILED LOGIN")
                     loginfailed = True
                     continue
             
@@ -102,4 +102,4 @@ for profile in Profile.objects.all():
                 task.save()
             
             fblogin.send(fbsession, task.body, task.friend_fb_id)
-            print("SENT MESSAGE")
+            logger.info("SENT MESSAGE")

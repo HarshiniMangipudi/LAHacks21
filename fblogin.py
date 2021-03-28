@@ -3,6 +3,13 @@ import time
 import fbchat
 import random
 from selenium import webdriver
+import logging
+
+filehandler = logging.FileHandler(os.path.join(os.path.dirname(__file__), 'events.log'))
+filehandler.setFormatter(logging.Formatter(fmt="%(asctime)s:%(levelname)s:%(message)s"))
+logger = logging.getLogger("janch")
+logger.setLevel(logging.INFO)
+logger.addHandler(filehandler)
 
 ON_PI = False
 
@@ -75,14 +82,14 @@ def getsession(login, cookies):
     if cookies is not None:
         try:
             msnger = fbchat.Client("", "", session_cookies=cookies) 
-            print("FIRST LOGIN GOOD")
+            logger.info("FIRST LOGIN GOOD")
         except fbchat.FBchatException:
-            print("FIRST LOGIN FAILED")
+            logger.info("FIRST LOGIN FAILED")
             refresh = True
     else: 
         refresh = True
     if refresh:
-        print("REFRESHING COOKIES")
+        logger.info("REFRESHING COOKIES")
         cookies = getcookies(login)
         try:
             time.sleep(3.1) 
