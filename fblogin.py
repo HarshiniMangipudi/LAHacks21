@@ -22,12 +22,13 @@ def getcookies(login):
     email_input = test_driver.find_element_by_id("email")
     pass_input = test_driver.find_element_by_id("pass")
     login_button = test_driver.find_element_by_id("loginbutton")
+    time.sleep(2.5)
     email_input.send_keys(login['email'])
     time.sleep(2.5)
     pass_input.send_keys(login['password'])
     time.sleep(2.2523)
     login_button.submit()
-    time.sleep(5.345345234)
+    time.sleep(7.345345234)
     allcookies = test_driver.get_cookies()
     
     successes = 0
@@ -56,6 +57,7 @@ def searchname(session, name):
     Returns:
         tuple: uid (str), autocorrect name (str)
     """
+    time.sleep(0.3)
     user = session.searchForUsers(name, limit=1)[0]
     return user.uid, user.name
 
@@ -69,17 +71,21 @@ def getsession(login, cookies):
     Returns:
         tuple: session, refreshed cookies
     """
+    refresh = False
     if cookies is not None:
         try:
             msnger = fbchat.Client("", "", session_cookies=cookies) 
+            print("FIRST LOGIN GOOD")
         except fbchat.FBchatException:
+            print("FIRST LOGIN FAILED")
             refresh = True
     else: 
         refresh = True
     if refresh:
-        time.sleep(3.1)
+        print("REFRESHING COOKIES")
         cookies = getcookies(login)
         try:
+            time.sleep(3.1) 
             msnger = fbchat.Client("", "", session_cookies=cookies) 
         except fbchat.FBchatException:
             raise LoginException("Login to Facebook failed using newly baked cookies. This is very bad.")
