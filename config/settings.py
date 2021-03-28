@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['73.93.49.157', '127.0.0.1', 'localhost']
 
+# USE_TZ = True
+# TIME_ZONE = 'US/Pacific'
+
 
 # Application definition
 
@@ -102,19 +105,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # AUTH_USER_MODEL = 'pages.User'
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
-
-USE_TZ = True
+USE_TZ = False 
+TIME_ZONE = 'US/Pacific'
 
 
 # Static files (CSS, JavaScript, Images)
