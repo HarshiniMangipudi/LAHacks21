@@ -5,6 +5,7 @@
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
         <form method="post">
+            {% csrf_token %}
             {% for field in form %}
               {% if field.name not in custom_handled_fields %}
                 <div class="form-group">
