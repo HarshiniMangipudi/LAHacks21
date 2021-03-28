@@ -78,7 +78,7 @@ for profile in Profile.objects.all():
                 #         'c_user': profile.fb_cookie_c_user,
                 #         'xs': profile.fb_cookie_xs
                 #     }
-                if profile.c_user == '': # if no cookies, get some
+                if profile.fb_cookie_c_user == '': # if no cookies, get some
                     cookies = None
                 else: 
                     cookies = {
