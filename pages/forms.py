@@ -1,5 +1,6 @@
 from django import forms
 from . import models
+from django.contrib.auth.forms import AuthenticationForm
 
 # class MessageForm(forms.Form):
 #     your_msg = forms.CharField(label='Your Message', max_length=100)
@@ -31,6 +32,11 @@ class TaskCreateForm(BootstrapForm):
 #         #need to add "due date" in fields 
 #         fields = ['task_name', 'body', 'user']
 
+class BootstrapLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(BootstrapLoginForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({'class': 'form-control'})
 
 
 class TaskForm(BootstrapForm):

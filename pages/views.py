@@ -6,7 +6,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -20,7 +19,7 @@ from .forms import ProfileUpdateForm, TaskCreateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db import models
 from .models import Task 
-from .forms import TaskForm
+from .forms import TaskForm, BootstrapLoginForm
 
 @login_required
 def homePageView(request):
@@ -45,6 +44,7 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 class UserLogin(LoginView):
+    authentication_form = BootstrapLoginForm
     redirect_authenticated_user = True
     template_name = 'login.html'
     next = '/'
