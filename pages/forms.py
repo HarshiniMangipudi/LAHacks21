@@ -50,5 +50,5 @@ class TaskForm(BootstrapForm):
             'Friday',
             'Saturday',
             'time_of_day',
-            'friend_fb_id'
+            'friend_name'
         ]

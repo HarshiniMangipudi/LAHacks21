@@ -37,7 +37,8 @@ class Task(models.Model):
     Friday = models.BooleanField(default=True)
     Saturday = models.BooleanField(default=True)
     time_of_day = models.TimeField(default=timezone.now)
-    friend_fb_id = models.CharField(max_length=300, blank=False, default='enter user id')
+    friend_name = models.CharField(max_length=300, blank=False, default='')
+    friend_fb_id = models.CharField(max_length=300, blank=False, default='')
 
     def __str__(self):
         return self.task_name
