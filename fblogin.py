@@ -1,20 +1,18 @@
 import os
 import time
-import logging
+import fbchat
+import random
 from selenium import webdriver
-
-filehandler = logging.FileHandler(os.path.join(os.path.dirname(__file__), 'events.log'))
-filehandler.setFormatter(logging.Formatter(fmt="%(asctime)s:%(levelname)s:%(message)s"))
-logger = logging.getLogger("loginslogger")
-logger.setLevel(logging.INFO)
-logger.addHandler(filehandler)
 
 ON_PI = False
 
-def getcookies(config):
+class LoginException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+def getcookies(login):
     if ON_PI:
         os.environ['PATH'] += os.pathsep + "/home/pi/Downloads/geckodriver-0.29.0/target/armv7-unknown-linux-gnueabihf/release"
-
     opts = webdriver.FirefoxOptions()
     opts.add_argument("--headless")
     opts.add_argument("--window-size=1080,1080")
@@ -24,25 +22,70 @@ def getcookies(config):
     email_input = test_driver.find_element_by_id("email")
     pass_input = test_driver.find_element_by_id("pass")
     login_button = test_driver.find_element_by_id("loginbutton")
-    email_input.send_keys(config['facebook']['email'])
-    time.sleep(4.5)
-    pass_input.send_keys(config['facebook']['password'])
+    email_input.send_keys(login['email'])
+    time.sleep(2.5)
+    pass_input.send_keys(login['password'])
     time.sleep(2.2523)
     login_button.submit()
-    time.sleep(6.345345234)
+    time.sleep(5.345345234)
     allcookies = test_driver.get_cookies()
     
     successes = 0
+    cookies = {}
 
     for cookie in allcookies:
         if cookie['name'] == 'c_user':
-            config['cookies']['c_user'] = cookie['value']
+            cookies['c_user'] = cookie['value']
             successes += 1
         elif cookie['name'] == 'xs':
-            config['cookies']['xs'] = cookie['value']
+            cookies['xs'] = cookie['value']
             successes += 1
 
     if successes != 2:
-        raise RuntimeError("Selenium Login Failed")
+        raise LoginException("Login to Facebook failed using email and password.")
     
-    return config
+    return cookies
+
+def searchname(session, name):
+    """Find uid and real name
+
+    Args:
+        session: fbchat session
+        name: search string
+
+    Returns:
+        tuple: uid (str), autocorrect name (str)
+    """
+    user = session.searchForUsers(name, limit=1)[0]
+    return user.uid, user.name
+
+def getsession(login, cookies):
+    """Get a messenger session
+
+    Args:
+        login ([type]): email and password
+        cookies (dict): xs and c_user
+
+    Returns:
+        tuple: session, refreshed cookies
+    """
+    if cookies is not None:
+        try:
+            msnger = fbchat.Client("", "", session_cookies=cookies) 
+        except fbchat.FBchatException:
+            refresh = True
+    else: 
+        refresh = True
+    if refresh:
+        time.sleep(3.1)
+        cookies = getcookies(login)
+        try:
+            msnger = fbchat.Client("", "", session_cookies=cookies) 
+        except fbchat.FBchatException:
+            raise LoginException("Login to Facebook failed using newly baked cookies. This is very bad.")
+    
+    return (msnger, cookies)
+
+def send(session, message, tid):
+    time.sleep((random.betavariate(2, 5) * 2) + 1)
+    session.send(fbchat.Message(text=message), thread_id=tid)
