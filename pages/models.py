@@ -53,8 +53,8 @@ class Task(models.Model):
     def __str__(self):
         msg = "-----Task-----\n"
         msg += f"Name: {self.task_name}\n"
-        msg += f"Body: {self.body}\n"
         msg += f"Time: {str(self.time_of_day)}\n"
         msg += f"Friend Name: {self.friend_name}\n"
         msg += f"Friend FBID: {str(self.friend_fb_id)}\n"
+        msg += f"[Body]\n{self.body}\n[End]"
         return msg
