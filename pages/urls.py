@@ -6,7 +6,7 @@ from .views import TaskListView, TaskDetailView, TaskCreateView, TaskUpdateView,
 from .models import Task 
 
 urlpatterns = [
-    path('', views.homePageView, name='home'),
+    path('', TaskListView.as_view(), name='home'),
     # path('sent', views.sentView, name='sent'),
     # path('simpleForm', views.simpleForm, name='simpleForm'),
     # actual paths below
@@ -21,7 +21,7 @@ urlpatterns = [
 
     url(r'^profileUpdate/$', views.profileUpdateView, name='profileUpdate'),
     
-    path('taskList', TaskListView.as_view(), name='taskList'), # ,
+    path('', TaskListView.as_view(), name='taskList'), # ,
     path('task/<int:pk>/', TaskDetailView.as_view(), name='taskDescription'),
     path('task/create', TaskCreateView.as_view(), name='taskCreate'),
     path('task/<int:pk>/update', TaskUpdateView.as_view(), name='taskUpdate'),

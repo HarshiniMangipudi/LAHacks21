@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <title>{% block title %}LAhacks{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm bg-light">
+    <nav class="navbar navbar-expand-sm bg-light" style="margin-bottom: 20px;">
         {% block sidebar %}
+        {% if user.is_authenticated %}
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'profileUpdate' %}">Update Profile</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
         </ul>
+        {% endif %}
         {% endblock %}
     </nav>
 

@@ -107,7 +107,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     #     'time_of_day',
     #     'friend_fb_id'
     # ]
-    success_url = '/taskList'
+    success_url = '/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user 
@@ -139,7 +139,7 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     #     'time_of_day',
     #     'friend_fb_id'
     # ]
-    success_url = '/taskList'
+    success_url = '/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user 
@@ -156,11 +156,11 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return res
 
 class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Task  
+    model = Task
     template_name = 'taskDelete.html'
-    success_url = '/taskList'
+    success_url = '/'
     def test_func(self):
-        task = self.get_object() 
+        task = self.get_object()
         return self.request.user == task.user
 
 

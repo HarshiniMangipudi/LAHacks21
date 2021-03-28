@@ -19,7 +19,7 @@
 <div class="container-fluid">
    <div class="row">
      <div class="col-md-12">
-       <h2> Task List</h2>
+       <h2>Task List</h2>
          <table class="table">
            <thead>
               <tr>
@@ -56,9 +56,11 @@
                 <td>{{task.friend_fb_id}}</td>
                 <td>{{task.body|truncatechars:9}}</td>
                 <td><!--Update and Remove buttons-->
+                    {% comment %}
                         <a href="{% url 'taskDescription' pk=request.user.id %}">Details</a>
-                        <a href="{% url 'taskDescription' pk=request.user.id %}">Edit</a>
-                        <a href="{% url 'taskDescription' pk=request.user.id %}">Remove</a>
+                    {% endcomment %}
+                        <a href="{% url 'taskUpdate' pk=task.pk %}">Edit</a>
+                        <a href="{% url 'taskDelete' pk=task.pk %}">Remove</a>
                 </td>
                 
               </tr>

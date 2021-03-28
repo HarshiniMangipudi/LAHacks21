@@ -4,6 +4,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
+        <h2>Create Task</h2>  
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
@@ -21,32 +22,38 @@
             {% endif %}
           {% endfor %}
 
-          <h4>Which days would you like a reminder on this task?</h4>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-sm btn-outline-primary days active">
-                <input type="checkbox" checked autocomplete="off"> Sunday
-              </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                <input type="checkbox" checked autocomplete="off"> Monday
-              </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Tuesday
-                </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Wednesday
-                </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Thursday
-                </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Friday
-                </label>
-              <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Saturday
-                </label>
-            </div>
-            <br>
-          <button type="submit" class="btn btn-outline-info">Submit</button>
+              <div class="form-group">
+              <label for="id_days_opt">Which days would you like a reminder on this task?</label>
+              <div class="btn-group btn-group-toggle" id="id_days_opt" data-toggle="buttons">
+                  {% for day in custom_handled_fields %}
+                      <label class="btn btn-sm btn-outline-primary days">
+                          <input type="checkbox" autocomplete="off" name="{{day}}"> {{day}}
+                      </label>
+                  {% endfor %}
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--   <input type="checkbox" checked autocomplete="off"> Sunday -->
+                  <!-- </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--   <input type="checkbox" checked autocomplete="off"> Monday -->
+                  <!-- </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--     <input type="checkbox" checked autocomplete="off"> Tuesday -->
+                  <!--   </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--     <input type="checkbox" checked autocomplete="off"> Wednesday -->
+                  <!--   </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--     <input type="checkbox" checked autocomplete="off"> Thursday -->
+                  <!--   </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--     <input type="checkbox" checked autocomplete="off"> Friday -->
+                  <!--   </label> -->
+                  <!-- <label class="btn btn-sm btn-outline-primary days active"> -->
+                  <!--     <input type="checkbox" checked autocomplete="off"> Saturday -->
+                  <!--   </label> -->
+                </div>
+              </div>
+          <button type="submit" class="btn btn-danger btn-block">Submit</button>
         </form> 
       </div>
     </div>
