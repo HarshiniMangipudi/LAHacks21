@@ -40,8 +40,8 @@ class TaskForm(BootstrapForm):
         fields = [
             'task_name',
             'body',
-            'date_added',
-            'date_due',
+            'start_date',
+            'end_date',
             'Sunday',
             'Monday',
             'Tuesday',

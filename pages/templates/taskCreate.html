@@ -5,47 +5,47 @@
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
         <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-              {% if field.name not in custom_handled_fields %}
-                <div class="form-group">
-                  {{ field.label_tag }}<br>
-                  {{ field }}
-                  {% if field.help_text %}
-                    <small class="form-text text-muted" style="color: grey">{{ field.help_text }}</small>
-                  {% endif %}
-                  {% for error in field.errors %}
-                    <div class="invalid-feedback" style="color: red">{{ error }}</div>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            {% endfor %}
-
-            <h4>Which days would you like a reminder on this task?</h4>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Sunday
-                </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                  <input type="checkbox" checked autocomplete="off"> Monday
-                </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                    <input type="checkbox" checked autocomplete="off"> Tuesday
-                  </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                    <input type="checkbox" checked autocomplete="off"> Wednesday
-                  </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                    <input type="checkbox" checked autocomplete="off"> Thursday
-                  </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                    <input type="checkbox" checked autocomplete="off"> Friday
-                  </label>
-                <label class="btn btn-sm btn-outline-primary days active">
-                    <input type="checkbox" checked autocomplete="off"> Saturday
-                  </label>
+          {% csrf_token %}
+          {% for field in form %}
+            {% if field.name not in custom_handled_fields %}
+              <div class="form-group">
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                  <small class="form-text text-muted" style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger" style="color: red"><small>{{ error }}</small></div>
+                {% endfor %}
               </div>
-              <br>
+            {% endif %}
+          {% endfor %}
+
+          <h4>Which days would you like a reminder on this task?</h4>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-sm btn-outline-primary days active">
+                <input type="checkbox" checked autocomplete="off"> Sunday
+              </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                <input type="checkbox" checked autocomplete="off"> Monday
+              </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Tuesday
+                </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Wednesday
+                </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Thursday
+                </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Friday
+                </label>
+              <label class="btn btn-sm btn-outline-primary days active">
+                  <input type="checkbox" checked autocomplete="off"> Saturday
+                </label>
+            </div>
+            <br>
           <button type="submit" class="btn btn-outline-info">Submit</button>
         </form> 
       </div>

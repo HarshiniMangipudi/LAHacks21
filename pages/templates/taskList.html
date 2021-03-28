@@ -23,7 +23,8 @@
          <table class="table">
            <thead>
               <tr>
-                <th>Due Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Time</th>
                 <th>Task Name</th>
                 <th>Days of the Week</th>
@@ -35,7 +36,8 @@
            <tbody>
               {% for task in tasks %}
               <tr>
-                <td>{{task.date_due}}</td>
+                <td>{{task.start_date}}</td>
+                <td>{{task.end_date}}</td>
                 <td>{{task.time_of_day}}</td>
                 <td>{{ task.task_name|truncatechars:9 }}</td>
                 <td><!--Weekly Buttons -->

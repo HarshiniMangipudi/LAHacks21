@@ -26,8 +26,10 @@ def save_user_profile(sender, instance, **kwargs):
 class Task(models.Model):
     task_name = models.CharField(max_length=300, blank=False)
     body = models.TextField(verbose_name="Description")
-    date_added = models.DateField(default=timezone.now, verbose_name="Date Added")
-    date_due = models.DateField(default=(timezone.now() + timedelta(days=2)), verbose_name="Date Due")
+    start_date = models.DateField(default=timezone.now, verbose_name="Start Date")
+    end_date = models.DateField(default=(timezone.now() + timedelta(days=2)), verbose_name="End Date")
+    # date_added = models.DateField(default=timezone.now, verbose_name="Date Added")
+    # date_due = models.DateField(default=(timezone.now() + timedelta(days=2)), verbose_name="Date Due")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     Sunday = models.BooleanField(default=True)
     Monday = models.BooleanField(default=True)
