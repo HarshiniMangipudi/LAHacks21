@@ -24,23 +24,23 @@
          <table class="table">
            <thead>
               <tr>
+                <th>Task Name</th>
+                <th>Message</th>
+                <th>Time</th>
+                <th>Friend Name</th>
+                <th>Days of the Week</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Time</th>
-                <th>Task Name</th>
-                <th>Days of the Week</th>
-                <th>Friend Name</th>
-                <th>Message</th>
                 <th>Actions</th>
               </tr>
            </thead>
            <tbody>
               {% for task in tasks %}
               <tr>
-                <td>{{task.start_date}}</td>
-                <td>{{task.end_date}}</td>
+                <td>{{ task.task_name}}</td>
+                <td style="word-wrap: break-word">{{task.body}}</td>
                 <td>{{task.time_of_day}}</td>
-                <td>{{ task.task_name|truncatechars:9 }}</td>
+                <td>{{task.friend_name}}</td>
                 <td><!--Weekly Buttons -->
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                 <div class="btn-group me-2" role="group">
@@ -54,14 +54,16 @@
                                 </div>
                         </div>
                 </td>
-                <td>{{task.friend_name}}</td>
-                <td>{{task.body|truncatechars:9}}</td>
+                <td>{{task.start_date}}</td>
+                <td>{{task.end_date}}</td>
                 <td><!--Update and Remove buttons-->
                     {% comment %}
                         <a href="{% url 'taskDescription' pk=request.user.id %}">Details</a>
                     {% endcomment %}
-                        <a href="{% url 'taskUpdate' pk=task.pk %}">Edit</a>
-                        <a href="{% url 'taskDelete' pk=task.pk %}">Remove</a>
+                    <div class="btn-group" role="group" aria-label="Actions">
+                        <a class="btn btn-warning" href="{% url 'taskUpdate' pk=task.pk %}">Edit</a>
+                        <a class="btn btn-danger" href="{% url 'taskDelete' pk=task.pk %}">Remove</a>
+                    </div>
                 </td>
                 
               </tr>
