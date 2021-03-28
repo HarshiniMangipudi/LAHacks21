@@ -1,8 +1,36 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>{% block title %}LAhacks{% endblock %}</title>
 
+</head>
 {% block content %}
-<p> Task </p>
-{% for task in tasks %}
-        <div class="media-body">
-        </div>
-{% endfor %}
+<div class="container-fluid">
+   <div class="row">
+     <div class="col-md-12">
+       <h2> Task List</h2>
+         <table class="table">
+           <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Task Name</th>
+                <th>Frequency</th>
+                <th>Friend Name</th>
+                <th>Message</th>
+                <th>Update Task</th>
+              </tr>
+           </thead>
+           <tbody>
+              {% for task in tasks %}
+              <div class="media-body">
+              </div>
+              {% endfor %}
+           </tbody>
+         </table>
+     </div>
+   </div>
+</div>
 {% endblock content %}
