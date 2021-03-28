@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -21,9 +22,10 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.db import models
 from .models import Task 
 
+@login_required
 def homePageView(request):
-    if not request.user.is_authenticated:
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    # if not request.user.is_authenticated:
+    #     return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
     return render(request, 'home.html')
 
 def signup_view(request):
@@ -44,11 +46,14 @@ class UserLogin(LoginView):
     redirect_authenticated_user = True
     template_name = 'login.html'
     next = '/'
+    redirect_field_name = '/home'
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def profileUpdateView(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -66,6 +71,7 @@ def profileUpdateView(request):
         form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'profileUpdateForm.html', {'form': form})
 
+@login_required
 def taskListViews(request):
     context = {
         'tasks' : Task.objects.filter(user = request.user)
@@ -79,6 +85,32 @@ class TaskListView(ListView):
 
 class TaskDetailView(DetailView):
     model = Task 
+    template_name = 'taskDescription.html'
+
+
+class TaskCreateView(CreateView):
+    model = Task 
+    template_name = 'taskCreate.html'
+    fields = [
+        'task_name',
+        'body',
+        'date_added',
+        'date_due',
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'time_of_day',
+        'friend_fb_id'
+    ]
+    success_url = '/taskList'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user 
+        return super().form_valid(form)
 
 # class TaskCreateView(CreateView):
 #     model = Task 
@@ -88,40 +120,40 @@ class TaskDetailView(DetailView):
 
 
 ## other way 
-def createTaskForm(request):
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = TaskCreateForm(request.POST )
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            form.save()
-            return redirect('taskCreation')
-        print("invalid form!")
+# def createTaskForm(request):
+#     if request.method == 'POST':
+#         # create a form instance and populate it with data from the request:
+#         form = TaskCreateForm(request.POST )
+#         # check whether it's valid:
+#         if form.is_valid():
+#             # process the data in form.cleaned_data as required
+#             # redirect to a new URL:
+#             form.save()
+#             return redirect('taskCreation')
+#         print("invalid form!")
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = TaskCreateForm()
-    return render(request, 'taskForm.html', {'form': form})
+#     # if a GET (or any other method) we'll create a blank form
+#     else:
+#         form = TaskCreateForm()
+#     return render(request, 'taskForm.html', {'form': form})
 
-def updateTaskForm(request, pk):
-    t = Task.objects.get(pk=pk)
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = TaskCreateForm(request.POST,instance=t)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            form.save()
-            return redirect('taskCreation')
-        print("invalid form!")
+# def updateTaskForm(request, pk):
+#     t = Task.objects.get(pk=pk)
+#     if request.method == 'POST':
+#         # create a form instance and populate it with data from the request:
+#         form = TaskCreateForm(request.POST,instance=t)
+#         # check whether it's valid:
+#         if form.is_valid():
+#             # process the data in form.cleaned_data as required
+#             # redirect to a new URL:
+#             form.save()
+#             return redirect('taskCreation')
+#         print("invalid form!")
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = TaskCreateForm(instance=t)
-    return render(request, 'taskForm.html', {'form': form})
+#     # if a GET (or any other method) we'll create a blank form
+#     else:
+#         form = TaskCreateForm(instance=t)
+#     return render(request, 'taskForm.html', {'form': form})
 
 
 

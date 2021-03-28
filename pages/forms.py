@@ -4,18 +4,21 @@ from . import models
 # class MessageForm(forms.Form):
 #     your_msg = forms.CharField(label='Your Message', max_length=100)
 
+class BootstrapForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BootstrapForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({'class': 'form-control'})
 
-
-class ProfileUpdateForm(forms.ModelForm):
+class ProfileUpdateForm(BootstrapForm):
     fb_password = forms.CharField(widget=forms.PasswordInput(), max_length=100)
     class Meta:
         model = models.Profile
         fields = ('fb_email', 'fb_password')
 
 ### other way 
-class TaskCreateForm(forms.ModelForm):
+class TaskCreateForm(BootstrapForm):
     class Meta:
-        
         model = models.Task 
         fields = '__all__'
         #need to add "due date" in fields 

@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 # from .views import homePageView
 from . import views
-from .views import TaskListView, TaskDetailView 
+from .views import TaskListView, TaskDetailView, TaskCreateView
 from .models import Task 
 
 urlpatterns = [
@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^profileUpdate/$', views.profileUpdateView, name='profileUpdate'),
     
     path('taskList', TaskListView.as_view(), name='taskList'), # ,
-    path('taskCreation', views.createTaskForm, name='taskCreation'),
-    path('taskUpdate/<int:pk>', views.updateTaskForm, name='taskUpdate')
+    path('task/<int:pk>/', TaskDetailView.as_view(), name='taskDescription'),
+    path('taskCreate', TaskCreateView.as_view(), name='taskCreate'),
+    # path('taskCreation', views.createTaskForm, name='taskCreation'),
+    # path('taskList', TaskListView.as_view(), name='taskList'), # ,
 ]
