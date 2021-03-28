@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 # from .views import homePageView
 from . import views
-from .views import TaskListView, TaskDetailView, TaskCreateView
+from .views import TaskListView, TaskDetailView, TaskCreateView, TaskUpdateView, TaskDeleteView
 from .models import Task 
 
 urlpatterns = [
@@ -23,7 +23,9 @@ urlpatterns = [
     
     path('taskList', TaskListView.as_view(), name='taskList'), # ,
     path('task/<int:pk>/', TaskDetailView.as_view(), name='taskDescription'),
-    path('taskCreate', TaskCreateView.as_view(), name='taskCreate'),
+    path('task/create', TaskCreateView.as_view(), name='taskCreate'),
+    path('task/<int:pk>/update', TaskUpdateView.as_view(), name='taskUpdate'),
+    path('task/<int:pk>/delete', TaskDeleteView.as_view(), name='taskDelete')
     # path('taskCreation', views.createTaskForm, name='taskCreation'),
     # path('taskList', TaskListView.as_view(), name='taskList'), # ,
 ]

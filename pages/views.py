@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 from django.conf import settings
@@ -17,7 +17,7 @@ from django.conf import settings
 # from .forms import MessageForm
 from .forms import ProfileUpdateForm, TaskCreateForm
 
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db import models
 from .models import Task 
 
@@ -87,7 +87,7 @@ class TaskDetailView(DetailView):
     template_name = 'taskDescription.html'
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task 
     template_name = 'taskCreate.html'
     fields = [
@@ -110,6 +110,43 @@ class TaskCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user 
         return super().form_valid(form)
+
+class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Task 
+    template_name = 'taskCreate.html'
+    fields = [
+        'task_name',
+        'body',
+        'date_added',
+        'date_due',
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'time_of_day',
+        'friend_fb_id'
+    ]
+    success_url = '/taskList'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user 
+        return super().form_valid(form)
+ 
+    def test_func(self):
+        task = self.get_object() 
+        return self.request.user == task.user
+
+class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Task  
+    template_name = 'taskDelete.html'
+    success_url = '/taskList'
+    def test_func(self):
+        task = self.get_object() 
+        return self.request.user == task.user
+
 
 # class TaskCreateView(CreateView):
 #     model = Task 
